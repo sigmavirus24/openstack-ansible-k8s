@@ -1,0 +1,10 @@
+---
+
+- name: Install golang, docker, etcd, and Kubernetes
+  hosts: compute_all
+  max_fail_percentage: 20
+  user: root
+  roles:
+    - role: "openstack-ansible-k8s"
+      tags:
+        - "openstack-kubernetes"
