@@ -1,11 +1,26 @@
 ---
-- include: download-and-install.yml
-  vars:
-    url: https://github.com/kubernetes/kubernetes/releases/download/v1.1.7/kubernetes.tar.gz
-    download_destination: /opt/kubernetes/
-    sha256sum: 31c75f5113ecb579e563ce94b26f3e77d553735e5ec96befcd2738d350c457e1
-    extract_from: /opt/kubernetes/kubernetes.tar.gz
+- name: Ensure kubernetes directory exists
+  file:
+    name: /opt/kubernetes/
+    state: directory
+    owner: root
+    group: root
 
+- name: Download kubernetes
+  get_url:
+    url: https://github.com/kubernetes/kubernetes/releases/download/v1.1.7/kubernetes.tar.gz
+    dest: /opt/kubernetes/
+    # TODO(sigmavirus24): When OSA starts using ansible 2.0, switch to
+    # checksum
+    #checksum: "sha256:{{ sha256sum }}"
+    sha256sum: 31c75f5113ecb579e563ce94b26f3e77d553735e5ec96befcd2738d350c457e1
+
+
+- name: Extract kubernetes
+  unarchive:
+    copy: no
+    dest: /opt/kubernetes/
+    src: /opt/kubernetes/kubernetes.tar.gz
 
 - name: Extract Kubernetes' nested binaries
   unarchive:
@@ -14,7 +29,7 @@
   tags:
     - k8s-binary-extraction
 
-- name: Hard link the binaries to /usr/local/bin
+- name: Hard link the kubernetes binaries to /usr/local/bin
   file:
     src: "/opt/kubernetes/kubernetes/server/bin/{{ item }}"
     dest: "/usr/local/bin/{{ item }}"

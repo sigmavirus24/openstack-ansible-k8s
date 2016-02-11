@@ -28,4 +28,3 @@
     dest: "/usr/local/bin/{{ item }}"
     state: hard
   with_items: "{{ binaries_to_extract }}"
-  when: binaries_to_extract is defined
