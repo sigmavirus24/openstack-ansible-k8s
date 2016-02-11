@@ -25,6 +25,7 @@
 - name: Extract Kubernetes' nested binaries
   unarchive:
     copy: no
+    dest: /opt/kubernetes/
     src: /opt/kubernetes/kubernetes/server/kubernetes-server-linux-amd64.tar.gz
   tags:
     - k8s-binary-extraction
