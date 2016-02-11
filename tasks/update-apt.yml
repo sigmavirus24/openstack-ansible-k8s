@@ -4,8 +4,8 @@
     state: "present"
     keyserver: "hkp://p80.pool.sks-keyservers.net:80"
     id: "58118E89F3A912897C070ADBF76221572C52609D"
-  register: k8s_add_docker_apt-key
-  until: k8s_add_docker_apt |success
+  register: k8s_add_docker_apt_key
+  until: k8s_add_docker_apt_key |success
   retries: 5
   delay: 2
   tags:
