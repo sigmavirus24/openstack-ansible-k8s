@@ -1,5 +1,5 @@
 ---
-- name: download-and-install.yml
+- include: download-and-install.yml
   vars:
     url: https://github.com/kubernetes/kubernetes/releases/download/v1.1.7/kubernetes.tar.gz
     download_destination: /opt/kubernetes/
