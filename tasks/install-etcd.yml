@@ -42,9 +42,8 @@
     url: https://github.com/coreos/etcd/releases/download/v2.2.5/etcd-v2.2.5-linux-amd64.tar.gz
     download_destination: /opt/etcd/
     sha256sum: aa6037406257d2a1bc48ffa769afe7a4f8a04cc1ffcd36ef84f9ee8bc4eca756
-    extract_to: /opt/etcd/binaries/
     extract_from: /opt/etcd/etcd-v2.2.5-linux-amd64.tar.gz
-    binaries_path: "{{ extract_to }}"
+    binaries_path: "{{ download_destination }}/etcd-v2.2.5-linux-amd64/"
     binaries_to_extract:
       - etcd
       - etcdctl

@@ -4,21 +4,19 @@
     url: https://github.com/kubernetes/kubernetes/releases/download/v1.1.7/kubernetes.tar.gz
     download_destination: /opt/kubernetes/
     sha256sum: 31c75f5113ecb579e563ce94b26f3e77d553735e5ec96befcd2738d350c457e1
-    extract_to: /opt/kubernetes/extracted
     extract_from: /opt/kubernetes/kubernetes.tar.gz
 
 
 - name: Extract Kubernetes' nested binaries
   unarchive:
     copy: no
-    dest: /opt/kubernetes/binaries
-    src: /opt/kubernetes/kubernetes-extracted/server/kubernetes-server-linux-amd64.tar.gz
+    src: /opt/kubernetes/kubernetes/server/kubernetes-server-linux-amd64.tar.gz
   tags:
     - k8s-binary-extraction
 
 - name: Hard link the binaries to /usr/local/bin
   file:
-    src: "/opt/kubernetes/kubernetes-binaries/{{ item }}"
+    src: "/opt/kubernetes/kubernetes/server/bin/{{ item }}"
     dest: "/usr/local/bin/{{ item }}"
     state: hard
   with_items:

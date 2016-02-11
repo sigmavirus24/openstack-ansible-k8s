@@ -6,7 +6,6 @@
     group: root
   with_items:
     - "{{ download_destination }}"
-    - "{{ extract_to }}"
 
 - name: Download binaries
   get_url:
@@ -20,7 +19,7 @@
 - name: Extract binaries
   unarchive:
     copy: no
-    dest: "{{ extract_to }}"
+    dest: "{{ download_destination }}"
     src: "{{ extract_from }}"
 
 - name: Hard link the binaries to /usr/local/bin

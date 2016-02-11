@@ -33,9 +33,8 @@
     url: https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz
     download_destination: /opt/golang/
     sha256sum: 43afe0c5017e502630b1aea4d44b8a7f059bf60d7f29dfd58db454d4e4e0ae53
-    extract_to: /opt/golang/binaries/
     extract_from: /opt/golang/go1.5.3.linux-amd64.tar.gz
-    binaries_path: "{{ extract_from }}/bin"
+    binaries_path: "{{ download_destination }}/go/bin"
     binaries_to_extract:
       - go
       - godoc
