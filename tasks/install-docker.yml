@@ -1,0 +1,61 @@
+---
+- name: Retrieve system information for linux-image-extra package
+  command: uname -r
+  register: kernel_version
+
+- name: Install the appropriate linux-image-extra package for Docker
+  apt:
+    name: "linux-image-extra-{{ kernel_version }}"
+    state: "present"
+  register: k8s_install_linux_image_extra
+  until: k8s_install_linux_image_extra |success
+  retries: 5
+  delay: 2
+  tags:
+    - k8s-apt-install
+    - k8s-linux_image_extra-install
+    - k8s-install
+
+- name: Install Docker
+  apt:
+    name: "docker-engine"
+    state: "present"
+  register: k8s_install_docker
+  until: k8s_install_docker |success
+  retries: 5
+  delay: 2
+  tags:
+    - k8s-apt-install
+    - k8s-docker-install
+    - k8s-install
+
+- name: Ensure the docker group exists
+  group:
+    name: "docker"
+    state: "present"
+  tags:
+    - k8s-docker-group
+
+- name: Ensure the docker user exists
+  user:
+    name: "docker"
+    group: "docker"
+    state: "present"
+  tags:
+    - k8s-docker-group
+    - k8s-docker-user
+
+- name: Ensure the magnum user is a member of the docker group
+  user:
+    name: "magnum"
+    groups: "docker"
+  tags:
+    - k8s-docker-group
+
+- name: Start the docker service and launch at startup
+  service:
+    name: "docker"
+    state: "started"
+    enabled: "yes"
+  tags:
+    - k8s-docker-install

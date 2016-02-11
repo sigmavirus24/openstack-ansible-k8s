@@ -1,0 +1,50 @@
+---
+# - name: Create a directory for our etcd downloads
+#   file:
+#     name: /opt/etcd
+#     state: directory
+#     owner: "root"
+#     group: "root"
+# 
+# - name: Download etcd binary for Linux AMD64
+#   get_url:
+#     url: https://github.com/coreos/etcd/releases/download/v2.2.5/etcd-v2.2.5-linux-amd64.tar.gz
+#     dest: /opt/etcd/
+#     checksum: sha256:aa6037406257d2a1bc48ffa769afe7a4f8a04cc1ffcd36ef84f9ee8bc4eca756
+#   register: k8s-etcd-download
+#   until: k8s-etcd-download |success
+#   retries: 5
+#   delay: 2
+#   tags:
+#     - k8s-etcd-install
+# 
+# - name: Unarchive the etcd file to extract the binaries
+#   unarchive:
+#     copy: no
+#     dest: /opt/etcd/etcd-binaries/
+#     src: /opt/etcd/etcd-v2.2.5-linux-amd64.tar.gz
+#   tags:
+#     - k8s-etcd-install
+# 
+# - name: Hard link etcd and etcdctl into place
+#   file:
+#     src: "/opt/etcd/etcd-binaries/{{ item }}"
+#     dest: "/usr/local/bin/{{ name }}"
+#     state: hard
+#   with_items:
+#     - etcd
+#     - etcdctl
+#   tags:
+#     - k8s-etcd-install
+
+- include: download-and-install.yml
+  vars:
+    url: https://github.com/coreos/etcd/releases/download/v2.2.5/etcd-v2.2.5-linux-amd64.tar.gz
+    download_destination: /opt/etcd/
+    sha256sum: aa6037406257d2a1bc48ffa769afe7a4f8a04cc1ffcd36ef84f9ee8bc4eca756
+    extract_to: /opt/etcd/etcd-binaries/
+    extract_from: /opt/etcd/etcd-v2.2.5-linux-amd64.tar.gz
+    binaries_path: "{{ extract_to }}"
+    binaries_to_extract:
+      - etcd
+      - etcdctl

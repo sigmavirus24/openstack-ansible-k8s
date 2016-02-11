@@ -1,2 +1,11 @@
 ---
-# tasks file for .
+
+- include: update-apt.yml
+
+- include: install-golang.yml
+
+- include: install-docker.yml
+
+- include: install-etcd.yml
+
+- include: install-kubernetes.yml

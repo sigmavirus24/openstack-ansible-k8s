@@ -1,0 +1,39 @@
+---
+- name: Add Docker apt key
+  apt_key:
+    state: "present"
+    keyserver: "hkp://p80.pool.sks-keyservers.net:80"
+    id: "58118E89F3A912897C070ADBF76221572C52609D"
+  register: k8s_add_docker_apt-key
+  until: k8s_add_docker_apt |success
+  retries: 5
+  delay: 2
+  tags:
+    - k8s-apt-install
+    - k8s-apt-packages
+    - k8s-apt-sources
+
+- name: Ensure Docker sources list exists
+  copy:
+    dest: "/etc/apt/sources.list.d/docker.list"
+    content: >
+      deb https://apt.dockerproject.org/repo ubuntu-trusty main
+    owner: "root"
+    group: "root"
+  tags:
+    - k8s-apt-install
+    - k8s-apt-packages
+    - k8s-apt-sources
+
+- name: Update apt sources
+  apt:
+    update_cache: "yes"
+    cache_valid_time: "600"
+  register: k8s_apt_update
+  until: k8s_apt_update |success
+  retries: 5
+  delay: 2
+  tags:
+    - k8s-apt-install
+    - k8s-apt-packages
+    - k8s-apt-sources

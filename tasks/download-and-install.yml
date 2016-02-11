@@ -1,0 +1,26 @@
+- name: Make download directory
+  file:
+    name: "{{ download_destination }}"
+    state: directory
+    owner: root
+    group: root
+
+- name: Download binaries
+  get_url:
+    url: "{{ url }}"
+    dest: "{{ download_destination }}"
+    checksum: "sha256:{{ sha256sum }}"
+
+- name: Extract binaries
+  unarchive:
+    copy: no
+    dest: "{{ extract_to }}"
+    src: "{{ extract_from }}"
+
+- name: Hard link the binaries to /usr/local/bin
+  file:
+    src: "{{ binaries_path }}/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    state: hard
+  with_items: "{{ binaries_to_extract }}"
+  when: binaries_to_extract is defined

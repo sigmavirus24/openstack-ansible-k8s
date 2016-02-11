@@ -1,0 +1,43 @@
+---
+- name: Create a directory for our golang download
+  file:
+    name: /opt/golang
+    state: directory
+    owner: "root"
+    group: "root"
+
+# - name: Install Golang for Kubernetes
+#   get_url:
+#     url: https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz
+#     dest: /opt/golang/
+#     checksum: sha256:43afe0c5017e502630b1aea4d44b8a7f059bf60d7f29dfd58db454d4e4e0ae53
+#   register: k8s-golang-download
+#   until: k8s-golang-download |success
+#   retries: 5
+#   delay: 2
+#   tags:
+#     - k8s-golang-install
+#   #  apt:
+#   #    name: "golang"
+#   #    state: "present"
+#   #  register: k8s_install_golang
+#   #  until: k8s_install_golang |success
+#   #  retries: 5
+#   #  delay: 2
+#   #  tags:
+#   #    - k8s-apt-install
+#   #    - k8s-golang-install
+#   #    - k8s-install
+- include: download-and-install.yml
+  vars:
+    url: https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz
+    download_destination: /opt/golang/
+    sha256sum: 43afe0c5017e502630b1aea4d44b8a7f059bf60d7f29dfd58db454d4e4e0ae53
+    extract_to: /opt/golang/golang-binaries/
+    extract_from: /opt/golang/go1.5.3.linux-amd64.tar.gz
+    binaries_path: "{{ extract_from }}/bin"
+    binaries_to_extract:
+      - go
+      - godoc
+      - gofmt
+
