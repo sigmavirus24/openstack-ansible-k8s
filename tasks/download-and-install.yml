@@ -1,9 +1,12 @@
-- name: Make download directory
+- name: Ensure necessary directories exist
   file:
-    name: "{{ download_destination }}"
+    name: "{{ item }}"
     state: directory
     owner: root
     group: root
+  with_items:
+    - "{{ download_destination }}"
+    - "{{ extract_to }}"
 
 - name: Download binaries
   get_url:
