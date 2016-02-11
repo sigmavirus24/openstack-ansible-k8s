@@ -5,7 +5,7 @@
 
 - name: Install the appropriate linux-image-extra package for Docker
   apt:
-    name: "linux-image-extra-{{ kernel_version }}"
+    name: "linux-image-extra-{{ kernel_version.stdout }}"
     state: "present"
   register: k8s_install_linux_image_extra
   until: k8s_install_linux_image_extra |success
