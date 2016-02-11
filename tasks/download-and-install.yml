@@ -9,7 +9,10 @@
   get_url:
     url: "{{ url }}"
     dest: "{{ download_destination }}"
-    checksum: "sha256:{{ sha256sum }}"
+    # TODO(sigmavirus24): When OSA starts using ansible 2.0, switch to
+    # checksum
+    #checksum: "sha256:{{ sha256sum }}"
+    sha256sum: "{{ sha256sum }}"
 
 - name: Extract binaries
   unarchive:
